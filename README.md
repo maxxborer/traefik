@@ -1,3 +1,3 @@
 # ***REMOVED***-traefik
 
-traefik docker
+traefik
