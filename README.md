@@ -1,3 +1,3 @@
-# ***REMOVED***-traefik
+# maxxborer-traefik
 
 traefik
