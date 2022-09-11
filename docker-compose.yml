@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   traefik:
-    image: traefik:2.5.6
+    image: traefik:2.8.4
     networks:
       - proxy
     restart: always
@@ -26,17 +26,17 @@ services:
     labels:
       - traefik.http.middlewares.traefik-compress.compress=true
       - traefik.http.routers.traefik.middlewares=traefik-compress
-      # - traefik.http.routers.to-https.rule=HostRegexp(`traefik.${DOMAIN}`)
-      # - traefik.http.routers.to-https.entrypoints=http
-      # - traefik.http.routers.to-https.middlewares=to-https
-      # - traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)
-      # - traefik.http.routers.traefik.entrypoints=https
-      # - traefik.http.routers.traefik.middlewares=auth
-      # - traefik.http.routers.traefik.service=api@internal
-      # - traefik.http.routers.traefik.tls=true
-      # - traefik.http.routers.traefik.tls.certresolver=${CERT_RESOLVER}
-      # - traefik.http.middlewares.to-https.redirectscheme.scheme=https
-      # - traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USER}:${TRAEFIK_PASSWORD_HASH}
+      - traefik.http.routers.to-https.rule=HostRegexp(`traefik.${DOMAIN}`)
+      - traefik.http.routers.to-https.entrypoints=http
+      - traefik.http.routers.to-https.middlewares=to-https
+      - traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)
+      - traefik.http.routers.traefik.entrypoints=https
+      - traefik.http.routers.traefik.middlewares=auth
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.routers.traefik.tls.certresolver=${CERT_RESOLVER}
+      - traefik.http.middlewares.to-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USER}:${TRAEFIK_PASSWORD}
     ports:
       - 80:80
       - 443:443
@@ -45,17 +45,6 @@ services:
       - /srv/traefik/letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./dynamic.yaml:/dynamic.yaml
-
-  # whoami:
-  #   image: containous/whoami
-  #   networks:
-  #     - proxy
-  #   labels:
-  #     - traefik.http.routers.https.rule=Host(`whoami.${DOMAIN}`)
-  #     - traefik.http.routers.https.entrypoints=https
-  #     - traefik.http.routers.https.tls=true
-  #     - traefik.http.routers.https.tls.certresolver=${CERT_RESOLVER}
-  #     - traefik.docker.network=proxy
 
 networks:
   proxy:
